@@ -8,84 +8,70 @@
 
 ---
 
-## ✨ Overview
-UNISEARCH is a multimodal search engine built to make academic content easily discoverable.  
-It connects **video transcripts**, **keyframes**, **images**, and **research papers** using modern embedding models like **BGE** and **SigLIP**, combined with **FAISS**, **BM25**, and **cross-encoder reranking**.
+🔍 UNISEARCH — Cross-Modal Academic Search Engine
 
-The project is split into two phases for clarity, modularity, and reproducibility.
+UNISEARCH is a production-style multimodal retrieval and RAG system for searching lecture videos, transcripts, images and research papers in a unified pipeline.
 
----
+🚀 What It Does
 
-## 🧠 Key Features
-- Multimodal retrieval (text, images, keyframes, PDFs)  
-- Dense embeddings using **BGE** for text and **SigLIP** for images  
-- Scalable vector search powered by **FAISS**  
-- Hybrid retrieval with **BM25 + vector search**  
-- Cross-encoder reranking for higher-quality results  
-- Transcript–keyframe alignment for richer context  
-- Evaluation block for Recall@k, Precision@k, ranking quality  
+Text → Text / Image semantic search across lectures and papers
 
+Image → Text retrieval via aligned keyframes
 
----
+Grounded QA with citations (lecture, timestamp, transcript snippet)
 
-## ⚙️ How the System Works
+🧠 System Architecture
+<p align="center"> <img width="5970" height="3570" alt="unisearch_v2_style1_glass" src="https://github.com/user-attachments/assets/8a80a29c-fe58-44f3-b424-4ecbaddad807" />
+ </p>
 
-### 🔷 Phase 1 — Data, Embeddings, and Indexing
-This phase prepares everything the search engine needs:
-- Extracts lecture transcripts and keyframes  
-- Cleans and chunks text into meaningful units  
-- Generates BGE text embeddings  
-- Generates SigLIP visual embeddings  
-- Builds FAISS vector indices  
-- Stores metadata, manifests, and ID mappings  
+Pipeline
 
-**Output:** A complete multimodal vector database.
+Multimodal ingestion (videos + PDFs)
 
----
+Whisper transcription + keyframe extraction
 
-### 🔶 Phase 2 — Query Engine, Ranking, Evaluation
-This phase delivers the search experience:
-- Accepts text queries  
-- Performs dense retrieval (FAISS)  
-- Performs sparse retrieval (BM25)  
-- Combines them using hybrid scoring  
-- Reranks results with a cross-encoder  
-- Evaluates with Recall@k, Precision@k, ranking metrics  
+Transcript–keyframe alignment
 
-**Output:** Ranked multimodal results optimized for relevance.
+Hybrid retrieval (BM25 + dense)
 
----
+FAISS vector search
 
-## ⭐ Why UNISEARCH Stands Out
-- It is a **full end-to-end ML pipeline**, not a toy example  
-- Handles **messy real academic data** across modalities  
-- Implements **industry-standard retrieval components**  
-- Designed to be modular, debuggable, and extensible  
-- Includes a clean evaluation suite for rapid experimentation  
+RAG with citation-backed answers
 
----
+🛠️ Tech Stack
 
-## 🎯 Potential Use Cases
-- Academic content search  
-- Multimodal retrieval-augmented generation (RAG)  
-- Lecture and course material exploration  
-- Research paper discovery  
-- Video content understanding systems  
+Embeddings: Fine-tuned BGE (text), SigLIP (images)
 
----
+Indexing: FAISS
 
-## 🚀 Future Improvements
-- Temporal video embeddings for long-context understanding  
-- Domain-specific fine-tuning of BGE / SigLIP  
-- Hallucination-resistant RAG summarization  
-- Streamlit or web-based interface for interactive search  
+RAG: Gemma-4B (grounded generation only)
 
----
+Backend: FastAPI
+
+UI: Gradio
+
+Evaluation: Recall, MRR, NDCG
+
+📊 Evaluation Highlights
+<p align="center"> <img width="1470" height="925" alt="Screenshot 2025-12-12 at 5 21 34 PM" src="https://github.com/user-attachments/assets/61598681-d14e-4b77-8b6c-471ed5221953" /> </p>
+
+Corpus: 38,121 academic passages
+
+Test Set: 93 queries
+
+Recall@300 improved 84% → 96% using fine-tuned BGE
+
+Significant gains in MRR and NDCG, especially on harder conceptual queries
+
+🔑 Why It Matters
+
+UNISEARCH demonstrates that retrieval quality—not just generation—drives reliable QA.
+Fine-tuning the retriever before generation led to more accurate, grounded, and trustworthy answers compared to LLM-only approaches.
+
 
 ## 🛠️ Getting Started
 1. Open **Phase 1** notebook in Colab → run preprocessing, embedding, and indexing  
-2. Open **Phase 2** notebook → load FAISS indexes and manifests  
-3. Run queries and test multimodal retrieval with evaluation metrics  
+2. Open **Phase 2** notebook → load FAISS indexes and manifests, run queries using Gradio UI and test multimodal retrieval with evaluation metrics  
 
 ---
 
